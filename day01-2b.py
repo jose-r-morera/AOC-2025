@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """
-Project: AOC 2025 - Day 1: Secret Entrance; PART 1
-Description: https://adventofcode.com/2025/day/1
+Project: AOC 2025 - Day 1: Secret Entrance; PART 2
+Description: https://adventofcode.com/2025/day/1 ; MORE ELEGANT SOLUTION
 Author: José Ramón Morera Campos
 Date: 01/12/2025
 """
@@ -13,6 +13,8 @@ import sys
 # Constants
 #---------------------------------------------------------
 INPUT_FILE = "day01-1-input.txt"
+INPUT_FILE = "day01-1-example.txt"
+
 
 # ---------------------------------------------------------
 # Auxiliar Functions
@@ -30,18 +32,13 @@ def main(args: list[str]) -> int:
         for line in file:
             s = line.strip()
             direction = s[0]
-            if direction == "L":
-                movement = -int(s[1:]) % 100
-            else:
-                movement = int(s[1:]) % 100
+            movement = int(s[1:])
 
-            position = position + movement
-            if position >= 100:
-                position = position - 100
-            elif position < 0:
-                position = position + 100
-            if position == 0:
-                zero_count += 1
+            zero_count += movement // 100
+            movement %= 100
+
+
+            print("Current position: ", position, " zero_count: ", zero_count)
             
     print("zero_count: ", zero_count)
     return 0
