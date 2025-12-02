@@ -13,7 +13,7 @@ import sys
 # Constants
 #---------------------------------------------------------
 INPUT_FILE = "day01-1-input.txt"
-INPUT_FILE = "day01-1-example.txt"
+#INPUT_FILE = "day01-1-example.txt"
 
 
 # ---------------------------------------------------------
@@ -22,7 +22,7 @@ INPUT_FILE = "day01-1-example.txt"
 
 # ---------------------------------------------------------
 # Core Logic
-# ---------------------------------------------------------
+# --------------------------------------------- = int(s------------
 def main(args: list[str]) -> int:
     """Main entry point for the script."""
 
@@ -31,14 +31,24 @@ def main(args: list[str]) -> int:
     with open(INPUT_FILE, "r") as file:
         for line in file:
             s = line.strip()
-            direction = s[0]
-            movement = int(s[1:])
+            direction, movement = s[0], int(s[1:])
 
             zero_count += movement // 100
             movement %= 100
+            if direction == 'L':
+                new_pos = position - movement
+                if new_pos < 0:
+                    if position != 0: zero_count += 1
+                    new_pos += 100
+                elif new_pos == 0: zero_count += 1
+            elif direction == 'R':
+                new_pos = position + movement
+                if new_pos >= 100:
+                    zero_count += 1
+                    new_pos -= 100
+            position = new_pos 
 
-
-            print("Current position: ", position, " zero_count: ", zero_count)
+            #print("Current position: ", position, " zero_count: ", zero_count)
             
     print("zero_count: ", zero_count)
     return 0

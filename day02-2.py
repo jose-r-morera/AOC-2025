@@ -8,7 +8,7 @@ Date: 02/12/2025
 
 import os
 import sys
-
+import re
 #---------------------------------------------------------
 # Constants
 #---------------------------------------------------------
@@ -33,11 +33,14 @@ def main(args: list[str]) -> int:
     count = 0
     for i in range(len(s)):
         interval = s[i].split(sep="-")
-
         for i in range(int(interval[0]), int(interval[1]) + 1):
-            if len(str(i)) % 2 == 0 and str(i)[:len(str(i)) // 2] == str(i)[len(str(i)) // 2:]:
-                print(f"Found matching number: {i}")
-                count += i
+            # Alternative: use re.fullmatch(r'^([0-9]+)\1+$', str(i))
+            for group_size in range(1, len(str(i)) // 2 + 1):
+                group = str(i)[:group_size]
+                if re.fullmatch(f"^({group})+$", str(i)):
+                    count += i
+                    break
+
 
     print(f"Total count: {count}")
     return 0
