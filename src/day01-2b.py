@@ -12,8 +12,8 @@ import sys
 #---------------------------------------------------------
 # Constants
 #---------------------------------------------------------
-INPUT_FILE = "day01-1-input.txt"
-#INPUT_FILE = "day01-1-example.txt"
+INPUT_FILE = "../data/day01-1-input.txt"
+#INPUT_FILE = "../data/day01-1-example.txt"
 
 
 # ---------------------------------------------------------

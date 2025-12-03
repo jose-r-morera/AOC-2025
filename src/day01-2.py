@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-Project: AOC 2025 - Day 1: Secret Entrance; PART 1
+Project: AOC 2025 - Day 1: Secret Entrance; PART 2
 Description: https://adventofcode.com/2025/day/1
 Author: José Ramón Morera Campos
 Date: 01/12/2025
@@ -12,7 +12,9 @@ import sys
 #---------------------------------------------------------
 # Constants
 #---------------------------------------------------------
-INPUT_FILE = "day01-1-input.txt"
+INPUT_FILE = "../data/day01-1-input.txt"
+#INPUT_FILE = "../data/day01-1-example.txt"
+
 
 # ---------------------------------------------------------
 # Auxiliar Functions
@@ -31,17 +33,27 @@ def main(args: list[str]) -> int:
             s = line.strip()
             direction = s[0]
             if direction == "L":
-                movement = -int(s[1:]) % 100
+                movement = -int(s[1:])
             else:
-                movement = int(s[1:]) % 100
+                movement = int(s[1:])
 
-            position = position + movement
-            if position >= 100:
-                position = position - 100
-            elif position < 0:
-                position = position + 100
-            if position == 0:
-                zero_count += 1
+            # Use cummulative position and // operator, which defines intervals [-100, 0), [0, 100), [100, 200), ... 
+            # Due to that, we have to handle the case where we move to the left and land on boundary x%100 == 0
+            # as it is one extra lap unaccounted by the integer division
+
+            # Special case, we are already on boundary x%100 == 0
+            if position % 100 == 0:
+                zero_count += abs(movement) // 100
+                position += movement
+            # Regural case, we are not on boundary
+            else:
+                previous_laps = position // 100
+                position += movement
+                current_laps = position // 100
+                zero_count += abs(current_laps - previous_laps)
+                # Case where we land exactly on 0
+                if position % 100 == 0 and movement < 0:
+                        zero_count += 1
             
     print("zero_count: ", zero_count)
     return 0

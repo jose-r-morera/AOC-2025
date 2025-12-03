@@ -1,9 +1,9 @@
 #!/usr/bin/env python3
 """
-Project: AOC 2025 - Day NUMBER: 
-Description: https://adventofcode.com/2025/day/NUMBER
+Project: AOC 2025 - Day 04: 
+Description: https://adventofcode.com/2025/day/04
 Author: José Ramón Morera Campos
-Date: NUMBER/12/2025
+Date: 04/12/2025
 """
 
 import os
@@ -15,8 +15,8 @@ from pathlib import Path
 #---------------------------------------------------------
 BASE_DIR = Path(__file__).resolve().parent.parent
 DATA_DIR = BASE_DIR / "data"
-INPUT_FILE = DATA_DIR / "dayNUMBER-1-input.txt"
-#INPUT_FILE = DATA_DIR / "dayNUMBER-1-example.txt"
+INPUT_FILE = DATA_DIR / "day04-1-input.txt"
+#INPUT_FILE = DATA_DIR / "day04-1-example.txt"
 
 # ---------------------------------------------------------
 # Auxiliar Functions
