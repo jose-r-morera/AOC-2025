@@ -18,7 +18,9 @@ DATA_DIR = BASE_DIR / "data"
 INPUT_FILE = DATA_DIR / "day04-1-input.txt"
 #INPUT_FILE = DATA_DIR / "day04-1-example.txt"
 
-PAPER = "@"
+PAPER_CHAR = "@"
+REMOVED_CHAR = "X"
+IGNORE_CHAR = "."
 
 ADJACENTOFFSETS = [(-1, -1), (-1, 0), (-1, 1),
                     (0, -1),          (0, 1),
@@ -46,27 +48,36 @@ def main(args: list[str]) -> int:
     pad = 0
     matrix.insert(0, [pad] * len(matrix[0]))
     matrix.append([pad] * len(matrix[0]))
-
     total = 0
-    for row_idx in range(1, len(matrix) - 1):
-        for pos, char in enumerate(matrix[row_idx]):
-            if char != PAPER:
-                continue
-            sum = 0
-            if pos == 0:
-                adjacency = ADJACENTOFFSETSL
-            elif pos == len(matrix[0]) - 1:
-                adjacency = ADJACENTOFFSETSR
-            else:
-                adjacency = ADJACENTOFFSETS
-            for adj in adjacency:
-                adj_row = row_idx + adj[0]
-                adj_col = pos + adj[1]
-                sum += matrix[adj_row][adj_col] == PAPER
-            if sum < 4:
-                total += 1
+    current_iteration = -1
+    while current_iteration != 0:
+        current_iteration = 0
+        for row_idx in range(1, len(matrix) - 1):
+            for pos, char in enumerate(matrix[row_idx]):
+                if char != PAPER_CHAR:
+                    continue
+                sum = 0
+                if pos == 0:
+                    adjacency = ADJACENTOFFSETSL
+                elif pos == len(matrix[0]) - 1:
+                    adjacency = ADJACENTOFFSETSR
+                else:
+                    adjacency = ADJACENTOFFSETS
+                for adj in adjacency:
+                    adj_row = row_idx + adj[0]
+                    adj_col = pos + adj[1]
+                    sum += matrix[adj_row][adj_col] == PAPER_CHAR
+                if sum < 4:
+                    matrix[row_idx][pos] = REMOVED_CHAR
+                    current_iteration += 1
+        total += current_iteration
+        # Remove all paper_CHAR
+        for row_idx in range(1, len(matrix) - 1):
+            for pos, char in enumerate(matrix[row_idx]):
+                if char == REMOVED_CHAR:
+                    matrix[row_idx][pos] = IGNORE_CHAR
 
-    print(f"Total positions to put paper: {total}")
+    print(f"Total positions to put paper_CHAR: {total}")
 
     return 0
 
