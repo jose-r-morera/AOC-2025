@@ -22,7 +22,7 @@ INPUT_FILE = DATA_DIR / "day06-input.txt"
 # ---------------------------------------------------------
 def read_vertical_number(matrix: list[list[str]], col: int) -> str:
     """Reads a vertical number from the matrix at the given column."""
-    return int("".join([matrix[row][col] for row in range(0, len(matrix) -1) if str.isdigit(matrix[row][col])]))
+    return int("".join(matrix[row][col] for row in range(0, len(matrix) -1) if str.isdigit(matrix[row][col])))
 # ---------------------------------------------------------
 # Core Logic
 # ---------------------------------------------------------
@@ -32,28 +32,27 @@ def main(args: list[str]) -> int:
     with open(INPUT_FILE, "r") as file:
         matrix = [list(line) for line in file]
 
-    # Make all operators have the same format / right limit
+    # Make all operators have the same format / right limit = " " + "char"
     matrix[-1].append(" ")
     matrix[-1].append("\n")
 
-    result = 0
-    segmet_start = 0
+    total_result = 0 # sum of all results
+    segment_start = 0
     for segment_end in range(1, len(matrix[-1])):
         if matrix[-1][segment_end] == " ":
             continue
         else: 
-            current_len = segment_end - segmet_start -1
-            operator = matrix[-1][segmet_start]
-            operation_total = read_vertical_number(matrix, segmet_start)
-            for col in range(segmet_start + 1, segmet_start + current_len):
+            operator = matrix[-1][segment_start]
+            current_op_result = read_vertical_number(matrix, segment_start)
+            for col in range(segment_start + 1, segment_end - 1):
                 number = read_vertical_number(matrix, col)
-                if operator == "+": operation_total += number
-                elif operator == "*": operation_total *= number
-            result += operation_total
+                if operator == "+": current_op_result += number
+                elif operator == "*": current_op_result *= number
+            total_result += current_op_result
 
-            segmet_start = segment_end
+            segment_start = segment_end
 
-    print(f"Result: {result}")
+    print(f"Result: {total_result}")
 
     return 0
 
