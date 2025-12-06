@@ -30,25 +30,20 @@ def main(args: list[str]) -> int:
     with open(INPUT_FILE, "r") as file:
         matrix = [list(line.strip().split()) for line in file]
 
-    result = 0
+    total = 0
     print("Matrix loaded:")
     for col in range(len(matrix[0])):
         operator =  matrix[-1][col]
-        total = int(matrix[0][col])
+        column_result = int(matrix[0][col])
         for row in range(1, len(matrix) - 1):
             value = int(matrix[row][col])
             if operator == "+":
-                total += value
-            elif operator == "-":
-                total -= value
+                column_result += value
             elif operator == "*":
-                total *= value
-            elif operator == "/":
-                total /= value
-        result += total
-        #print (f"Column {col}: {total}")
+                column_result *= value
+        total += column_result
 
-    print(f"Result: {result}")
+    print(f"Result: {total}")
 
     return 0
 
