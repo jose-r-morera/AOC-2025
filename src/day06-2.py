@@ -22,7 +22,7 @@ INPUT_FILE = DATA_DIR / "day06-input.txt"
 # ---------------------------------------------------------
 def read_vertical_number(matrix: list[list[str]], col: int) -> str:
     """Reads a vertical number from the matrix at the given column."""
-    return "".join([matrix[row][col] for row in range(1, len(matrix) -1) if str.isdigit(matrix[row][col])])
+    return int("".join([matrix[row][col] for row in range(0, len(matrix) -1) if str.isdigit(matrix[row][col])]))
 # ---------------------------------------------------------
 # Core Logic
 # ---------------------------------------------------------
@@ -44,12 +44,11 @@ def main(args: list[str]) -> int:
         else: 
             current_len = segment_end - segmet_start -1
             operator = matrix[-1][segmet_start]
-            operation_total = 1 if operator == "*" else 0
-            for col in range(segmet_start, segmet_start+current_len):
-                number = matrix[0][col] if matrix[0][col] != " " else ""
-                number = number + read_vertical_number(matrix, col)
-                if operator == "+": operation_total += int(number)
-                elif operator == "*": operation_total *= int(number)
+            operation_total = read_vertical_number(matrix, segmet_start)
+            for col in range(segmet_start + 1, segmet_start + current_len):
+                number = read_vertical_number(matrix, col)
+                if operator == "+": operation_total += number
+                elif operator == "*": operation_total *= number
             result += operation_total
 
             segmet_start = segment_end
