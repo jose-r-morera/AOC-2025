@@ -15,7 +15,7 @@ from pathlib import Path
 BASE_DIR = Path(__file__).resolve().parent.parent
 DATA_DIR = BASE_DIR / "data"
 INPUT_FILE = DATA_DIR / "day07-input.txt"
-INPUT_FILE = DATA_DIR / "day07-example.txt"
+#INPUT_FILE = DATA_DIR / "day07-example.txt"
 
 # ---------------------------------------------------------
 # Auxiliar Functions
@@ -42,13 +42,11 @@ def main(args: list[str]) -> int:
         for idx in current_beam_row.keys():
             if row[idx] == "^":
                 count += current_beam_row[idx]
-                if idx + 1 in next_beam_row: next_beam_row[idx + 1] += current_beam_row[idx]
-                else: next_beam_row[idx + 1] = current_beam_row[idx]
-                if idx - 1 in next_beam_row: next_beam_row[idx - 1] += current_beam_row[idx]
-                else: next_beam_row[idx - 1] = current_beam_row[idx]
+                next_beam_row[idx + 1] = next_beam_row.get(idx + 1, 0) + current_beam_row[idx]
+                next_beam_row[idx - 1] = next_beam_row.get(idx - 1, 0) + current_beam_row[idx]
             else:
-                if idx in next_beam_row: next_beam_row[idx] += current_beam_row[idx]
-                else: next_beam_row[idx] = current_beam_row[idx]
+                next_beam_row[idx] = next_beam_row.get(idx, 0) + current_beam_row[idx]
+
         current_beam_row = next_beam_row
     print(f"Result: {count}")
 

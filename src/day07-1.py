@@ -30,16 +30,11 @@ def main(args: list[str]) -> int:
     with open(INPUT_FILE, "r") as file:
         matrix = [line.strip() for line in file]
 
-    # for row in matrix:
-    #     print(row)
-
-    count = 0
-    
+    count = 0   
     for idx, elem in enumerate(matrix[0]):
         print (elem, idx)
         if elem == "S":
             current_beam = [idx]
-    print (current_beam)
     for row in matrix[1:]:
         next_beam = set()
         for idx in current_beam:
@@ -51,10 +46,6 @@ def main(args: list[str]) -> int:
                 next_beam.add(idx)
         current_beam = next_beam
     print(f"Result: {count}")
-
-
-
-        
 
     return 0
 
