@@ -15,7 +15,7 @@ from pathlib import Path
 BASE_DIR = Path(__file__).resolve().parent.parent
 DATA_DIR = BASE_DIR / "data"
 INPUT_FILE = DATA_DIR / "day07-input.txt"
-# INPUT_FILE = DATA_DIR / "day07-example.txt"
+INPUT_FILE = DATA_DIR / "day07-example.txt"
 
 # ---------------------------------------------------------
 # Auxiliar Functions
@@ -30,26 +30,26 @@ def main(args: list[str]) -> int:
     with open(INPUT_FILE, "r") as file:
         matrix = [line.strip() for line in file]
 
-    # for row in matrix:
-    #     print(row)
-
-    count = 0
-    
     for idx, elem in enumerate(matrix[0]):
-        print (elem, idx)
         if elem == "S":
-            current_beam = [idx]
-    print (current_beam)
+            current_beam_row = {idx:1} # use a position: count dictionaire of beams for each row
+    count = 1 # Initial Beam at S
+    # On each split, the "timelines" are added to the dict as a count of beam in that new position
+    # Eg if two splits might produce a beam in column 3 -> 3:2
+    # A split adds 1 to the position to its left and its right; whereas no split conservates previous beams
     for row in matrix[1:]:
-        next_beam = set()
-        for idx in current_beam:
+        next_beam_row = {}
+        for idx in current_beam_row.keys():
             if row[idx] == "^":
-                count += 1
-                next_beam.add(idx + 1)
-                next_beam.add(idx -1)
+                count += current_beam_row[idx]
+                if idx + 1 in next_beam_row: next_beam_row[idx + 1] += current_beam_row[idx]
+                else: next_beam_row[idx + 1] = current_beam_row[idx]
+                if idx - 1 in next_beam_row: next_beam_row[idx - 1] += current_beam_row[idx]
+                else: next_beam_row[idx - 1] = current_beam_row[idx]
             else:
-                next_beam.add(idx)
-        current_beam = next_beam
+                if idx in next_beam_row: next_beam_row[idx] += current_beam_row[idx]
+                else: next_beam_row[idx] = current_beam_row[idx]
+        current_beam_row = next_beam_row
     print(f"Result: {count}")
 
 
