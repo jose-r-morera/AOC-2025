@@ -21,8 +21,7 @@ INPUT_FILE = DATA_DIR / "day08-input.txt"
 #INPUT_FILE = DATA_DIR / "day08-example.txt"
 
 JUNCTION_PAIRS = 1000
-n = 3
-
+N_LARGEST = 3
 
 # ---------------------------------------------------------
 # Auxiliar Functions
@@ -56,29 +55,24 @@ def main(args: list[str]) -> int:
 
     best_pairs = sorted((-d, i, j) for d, i, j in heap)
 
-    # Assign groups
-    group_length = defaultdict(int)
+    # Create groups from connections; store their sizes (number of boxes)
+    group_length = defaultdict(lambda: 1) # Pair group id: size, start with size 1
     for pair in best_pairs:
         box_1_group = junction_boxes[keys[pair[1]]]
         box_2_group = junction_boxes[keys[pair[2]]]
         if box_1_group != box_2_group: 
-            if group_length[box_1_group] > group_length[box_2_group]:
-                old = box_2_group
-                new = box_1_group
-            else: 
-                old = box_1_group
-                new = box_2_group
+            old, new = (box_2_group, box_1_group) if group_length[box_1_group] > group_length[box_2_group] else (box_1_group, box_2_group)
             # Update groups
             for key in junction_boxes.keys():
                 if junction_boxes[key] == old:
                     junction_boxes[key] = new
                     group_length[new] += 1
-            group_length[old] = 0
+            group_length[old] = 0 # Remove groups so they are not retrieved when listing largest_n
     
-    largest_n = heapq.nlargest(n, group_length.items(), key=lambda x: x[1])
+    largest_n = heapq.nlargest(N_LARGEST, group_length.items(), key=lambda x: x[1])
     total = 1
     for group in largest_n:
-        total *= (group[1] + 1) # +1 as the group length started at 0
+        total *= group[1] # x component (problem requisit)
     print(total)
    
 
